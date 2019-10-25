@@ -1,0 +1,46 @@
+.centered{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 37px;
+    font-weight: 500;
+    color: white;
+    font-style: italic;
+    text-align: center;
+    background: black;
+    opacity: 0.6;
+    filter: alpha(opacity=60);
+    text-decoration: underline;
+}
+
+img{
+    width: 100%;
+}
+
+h2{
+    margin-top: 20px;
+    text-align: center;
+}
+
+.example-card {
+    max-width: 400px;
+    margin: auto;
+    height: auto;
+}
+
+.example-card img{
+    margin: auto;
+}
+
+.containerCards{
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+@media (max-width: 600px){
+    .centered{
+        font-size: 20px;
+    }
+}

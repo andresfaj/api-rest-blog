@@ -1,0 +1,19 @@
+footer{
+    background: #82B1FF;
+    text-align: center;
+    padding: 15px;
+    display: flex;
+    
+}
+
+footer i{
+    margin: 10px;
+}
+
+a:link{
+    text-decoration: none;
+}
+
+.dev{
+    font-style: italic;
+}
