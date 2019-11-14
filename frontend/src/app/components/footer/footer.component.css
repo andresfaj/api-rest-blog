@@ -2,12 +2,12 @@ footer{
     background: #82B1FF;
     text-align: center;
     padding: 15px;
-    display: flex;
-    
+    /* display: flex; */
 }
 
 footer i{
     margin: 10px;
+    color: white;
 }
 
 a:link{

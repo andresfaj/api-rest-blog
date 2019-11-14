@@ -10,13 +10,14 @@
 }
 
 .navbar2{
-    height: 10px;
+    height: 20px;
     padding-right: 25px;
     padding-bottom: 10px;
 }
 
 .navbar2 i{
     margin: 10px;
+    color: white;
 }
 
 .example-spacer {
