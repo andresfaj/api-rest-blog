@@ -34,3 +34,16 @@ img{
     height:50px;
     margin-right: 10px;
 }
+
+.menuh{
+    display: none;
+}
+
+@media only screen and (max-width: 600px){
+    .nav{
+        display: none;
+    }
+    .menuh{
+        display: inline;
+    }
+}

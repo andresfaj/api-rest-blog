@@ -2,29 +2,42 @@
     <h1>Naydú Jaramillo</h1>
 </a> -->
 
-<mat-toolbar class="navbar">
-    <mat-toolbar-row>
-      <a [routerLink]="['/']">
-        <img src="../../../assets/logo2.png" alt="">
-      </a>
-      <a id="title" [routerLink]="['/']">
-        <h1>Naydú Jaramillo</h1>
-      </a>
-      <span class="example-spacer"></span>
-      <a mat-button> Inicio </a>
-      <a mat-button> ¿Quién soy? </a>
-      <a mat-button> Mamá Blogger </a>
-      <a mat-button> Contáctame </a>
+<mat-sidenav-container>
+  <mat-sidenav #sidenav [(opened)]="opened">
+    <h1>Hello world</h1>
+  </mat-sidenav>
 
-    </mat-toolbar-row>
-    <mat-toolbar-row class="navbar2">
-        <span class="example-spacer"></span>
-        <a href="https://www.facebook.com/naydujaramillo/" target="_blank">
-          <i class="fab fa-facebook-f"></i>
-        </a>  
-        <!-- <i class="fab fa-twitter"></i> -->
-        <a href="https://www.instagram.com/naydujaramillo/?hl=es-la" target="_blank">
-          <i class="fab fa-instagram"></i>        
-        </a>
-    </mat-toolbar-row>
-</mat-toolbar> 
+  <mat-sidenav-content>
+      <mat-toolbar class="navbar">
+          <mat-toolbar-row>
+            <button class="menuh" mat-icon-button aria-label="menu hamburguesa" (click)="sidenav.toggle()">
+              <mat-icon>menu</mat-icon>
+            </button>
+            <a [routerLink]="['/']">
+              <img src="../../../assets/logo2.png" alt="">
+            </a>
+            <a id="title" [routerLink]="['/']">
+              <h1>Naydú Jaramillo</h1>
+            </a>
+            <span class="example-spacer"></span>
+            <a mat-button class="nav"> Inicio </a>
+            <a mat-button class="nav"> ¿Quién soy? </a>
+            <a mat-button class="nav"> Mamá Blogger </a>
+            <a mat-button class="nav"> Contáctame </a>
+      
+          </mat-toolbar-row>
+          <mat-toolbar-row class="navbar2">
+              <span class="example-spacer"></span>
+              <a href="https://www.facebook.com/naydujaramillo/" target="_blank">
+                <i class="fab fa-facebook-f"></i>
+              </a>  
+              <!-- <i class="fab fa-twitter"></i> -->
+              <a href="https://www.instagram.com/naydujaramillo/?hl=es-la" target="_blank">
+                <i class="fab fa-instagram"></i>        
+              </a>
+          </mat-toolbar-row>
+      </mat-toolbar> 
+  </mat-sidenav-content>
+
+</mat-sidenav-container>
+
