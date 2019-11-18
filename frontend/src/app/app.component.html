@@ -1,7 +1,42 @@
-<app-navbar></app-navbar>
+<mat-toolbar class="navbar">
+    <mat-toolbar-row>
+      <button class="menuh" mat-icon-button aria-label="menu hamburguesa" (click)="sidenav.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <a [routerLink]="['/']">
+        <img src="../../../assets/logo2.png" alt="">
+      </a>
+      <a id="title" [routerLink]="['/']">
+        <h1>Naydú Jaramillo</h1>
+      </a>
+      <span class="example-spacer"></span>
+      <a mat-button class="nav" [routerLink]="['/']"> Inicio </a>
+      <a mat-button class="nav" [routerLink]="['/quiensoy']"> ¿Quién soy? </a>
+      <a mat-button class="nav"> Mamá Blogger </a>
+      <a mat-button class="nav"> Contáctame </a>
 
-<div>
-  <router-outlet></router-outlet>
-</div>
+    </mat-toolbar-row>
+    <mat-toolbar-row class="navbar2">
+        <span class="example-spacer"></span>
+        <a href="https://www.facebook.com/naydujaramillo/" target="_blank">
+          <i class="fab fa-facebook-f"></i>
+        </a>  
+        <!-- <i class="fab fa-twitter"></i> -->
+        <a href="https://www.instagram.com/naydujaramillo/?hl=es-la" target="_blank">
+          <i class="fab fa-instagram"></i>        
+        </a>
+    </mat-toolbar-row>
+</mat-toolbar>
+
+<mat-sidenav-container>
+  <mat-sidenav #sidenav [(opened)]="opened">
+    <h1>Hello world</h1>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+
+</mat-sidenav-container>
 
 <app-footer></app-footer>
