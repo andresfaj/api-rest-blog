@@ -1,8 +1,5 @@
 <mat-toolbar class="navbar">
     <mat-toolbar-row>
-      <button class="menuh" mat-icon-button aria-label="menu hamburguesa" (click)="sidenav.toggle()">
-        <mat-icon>menu</mat-icon>
-      </button>
       <a [routerLink]="['/']">
         <img src="../../../assets/logo2.png" alt="">
       </a>
@@ -10,6 +7,9 @@
         <h1>Naydú Jaramillo</h1>
       </a>
       <span class="example-spacer"></span>
+      <button class="menuh" mat-icon-button aria-label="menu hamburguesa" (click)="sidenav.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
       <a mat-button class="nav" [routerLink]="['/']"> Inicio </a>
       <a mat-button class="nav" [routerLink]="['/quiensoy']"> ¿Quién soy? </a>
       <a mat-button class="nav"> Mamá Blogger </a>
@@ -25,12 +25,32 @@
         <a href="https://www.instagram.com/naydujaramillo/?hl=es-la" target="_blank">
           <i class="fab fa-instagram"></i>        
         </a>
+        <a href="https://www.youtube.com/channel/UCUDhSKpUBFNlQhrbgUjKeRA" target="_blank">
+          <i class="fab fa-youtube"></i>        
+        </a>  
     </mat-toolbar-row>
 </mat-toolbar>
 
 <mat-sidenav-container>
   <mat-sidenav #sidenav [(opened)]="opened">
-    <h1>Hello world</h1>
+    <mat-nav-list>
+      <mat-list-item>
+        <mat-icon class="iconSidenav"> home </mat-icon>
+        <button mat-button [routerLink]="['/']"> Inicio </button>
+      </mat-list-item>
+      <mat-list-item>
+        <mat-icon class="iconSidenav"> perm_identity </mat-icon>
+        <button mat-button [routerLink]="['/quiensoy']"> ¿Quién soy? </button>
+      </mat-list-item>
+      <mat-list-item>
+        <mat-icon class="iconSidenav"> forum </mat-icon>
+        <button mat-button [routerLink]="['/quiensoy']"> Mamá Blogger </button>
+      </mat-list-item>
+      <mat-list-item>
+        <mat-icon class="iconSidenav"> contact_mail </mat-icon>
+        <button mat-button [routerLink]="['/quiensoy']"> Contáctame </button>
+      </mat-list-item>
+    </mat-nav-list>
   </mat-sidenav>
 
   <mat-sidenav-content>

@@ -31,6 +31,11 @@ img{
 
 .menuh{
     display: none;
+    margin-right: 7px;
+}
+
+.iconSidenav{
+    color: #82B1FF;
 }
 
 @media only screen and (max-width: 600px){

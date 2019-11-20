@@ -17,3 +17,11 @@ a:link{
 .dev{
     font-style: italic;
 }
+
+.copyright{
+    opacity: 0.5;
+}
+
+span{
+    color: white;
+}
