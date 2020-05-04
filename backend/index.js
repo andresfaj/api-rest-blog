@@ -8,18 +8,20 @@ const app = express();
 require('./database');
 
 //Settings
-app.set('appName','Naydu Jaramillo');
+app.set('appName', 'Naydu Jaramillo');
 app.set('port', process.env.PORT || 3000);
 
 //Middlewares
 app.use(express.json());
 app.use(morgan('dev'));
-app.use(cors({origin: 'http://localhost:4200'}));
+app.use(cors({ origin: 'http://localhost:4200' }));
 
 //Routes
-app.use('/blog',require('./routes/blog.routes'));
+app.use('/blog', require('./routes/post.route'));
+app.use(require('./routes/user.route'));
+app.use(require('./routes/profile.route'));
 app.get('/', (req, res) => {
-    res.send('<h1> Hello World </h1>');
+    res.send('<h1> This is Naydú Jaramillo Backend server </h1>');
 });
 
 //Server

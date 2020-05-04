@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const blogController = require('../controllers/blog.controllers');
+const blogController = require('../controllers/post.controller');
 
 router.get('/post/:id', blogController.getPublication);
 router.get('/allposts', blogController.getPublications);
