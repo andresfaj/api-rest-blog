@@ -6,10 +6,11 @@ var colors = require('colors');
 //Initiliazations
 const app = express();
 require('./database');
+require('./server/config/config');
 
 //Settings
 app.set('appName', 'Naydu Jaramillo');
-app.set('port', process.env.PORT || 3000);
+// app.set('port', process.env.PORT || 3000);
 
 //Middlewares
 app.use(express.json());
@@ -26,7 +27,7 @@ app.get('/', (req, res) => {
 });
 
 //Server
-app.listen(app.get('port'), () => {
+app.listen(process.env.PORT, () => {
     console.log(`${app.get('appName')} backend server is running`.green);
-    console.log(`Server on port ${app.get('port')}`.green)
+    console.log(`Server on port ${process.env.PORT}`.green)
 });

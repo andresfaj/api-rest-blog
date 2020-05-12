@@ -16,34 +16,46 @@ blogController.getPublications = async(req, res) => {
 blogController.postPublication = async(req, res) => {
     try {
         const { title, subtitle, body, categoryId, userId, urlImage, comments } = req.body;
+        console.log("titulo", title);
         const responseDetail = new modelBlog({ title, subtitle, body, categoryId, userId, urlImage, comments });
         const categoryExist = await modelCategory.findOne({ categoryId: categoryId });
         let userExist = await modelUser.findOne({ userId: userId });
-        if (categoryExist && userExist) {
-            await responseDetail.save();
-            res.json({
-                response: {
-                    code: 0,
-                    description: "publication saved"
-                },
-                responseDetail
-            });
-        } else if (categoryExist === null) {
-            res.json({
+        if (title == undefined || subtitle == undefined || body == undefined || categoryId == undefined || userId == undefined) {
+            res.status(400).json({
                 response: {
                     code: 1,
-                    description: `The category with id:${categoryId} do not exist`
-                },
-                responseDetail
+                    description: "Falta algún campo necesario"
+                }
             });
         } else {
-            res.json({
-                response: {
-                    code: 1,
-                    description: `The user with id:${userId} do not exist`
-                },
-                responseDetail
-            });
+
+            if (categoryExist && userExist) {
+                await responseDetail.save();
+                res.json({
+                    response: {
+                        code: 0,
+                        description: "publication saved"
+                    },
+                    responseDetail
+                });
+            } else if (categoryExist === null) {
+                res.json({
+                    response: {
+                        code: 1,
+                        description: `The category with id:${categoryId} do not exist`
+                    },
+                    responseDetail
+                });
+            } else {
+                res.json({
+                    response: {
+                        code: 1,
+                        description: `The user with id:${userId} do not exist`
+                    },
+                    responseDetail
+                });
+            }
+
         }
     } catch (err) {
         console.log(err);

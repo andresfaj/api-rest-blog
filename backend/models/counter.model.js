@@ -5,4 +5,6 @@ var counterSchema = mongoose.Schema({
     seq: { type: Number, default: 0 }
 });
 
+counterSchema.methods.get
+
 module.exports = mongoose.model('counters', counterSchema);
