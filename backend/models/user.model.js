@@ -6,7 +6,8 @@ var userSchema = new mongoose.Schema({
     lastName: { type: String, required: true },
     roleId: { type: Number, required: true },
     email: { type: String, required: true },
-    urlImage: String,
+    password: { type: String, required: true },
+    urlImage: { type: String },
     date: { type: Date, default: Date.now }
 });
 
