@@ -1,5 +1,4 @@
 const modelUser = require('../models/user.model');
-const modelRole = require('../models/role.model');
 const userController = {}
 
 userController.getUsers = async(req, res) => {
@@ -8,10 +7,10 @@ userController.getUsers = async(req, res) => {
 }
 
 userController.postUser = async(req, res) => {
-    const { userId, name, lastName, roleId, email } = req.body;
-    const responseDetail = new modelUser({ userId, name, lastName, roleId, email });
-    let roleExist = await modelRole.findOne({ roleId: roleId });
-    if (roleExist) {
+
+    const { name, lastName, role, email, password, urlImage } = req.body;
+    const responseDetail = new modelUser({ name, lastName, role, email, password, urlImage });
+    try {
         await responseDetail.save();
         res.json({
             response: {
@@ -20,14 +19,17 @@ userController.postUser = async(req, res) => {
             },
             responseDetail
         });
+
+    } catch (err) {
+        console.log('que kaka');
+        res.status(400).json({
+            response: {
+                code: 1,
+                description: err
+            },
+            responseDetail
+        });
     }
-    res.json({
-        response: {
-            code: 1,
-            description: `The role with id:${roleId} do not exist`
-        },
-        responseDetail
-    });
 }
 
 module.exports = userController;

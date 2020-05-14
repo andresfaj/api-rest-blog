@@ -4,7 +4,8 @@ const URI = 'mongodb://localhost:27017/dbnaydujaramillo';
 
 mongoose.connect(URI, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useCreateIndex: true
 });
 
 var db = mongoose.connection;
