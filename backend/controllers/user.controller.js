@@ -10,33 +10,63 @@ userController.getUsers = (req, res) => {
     let limit = req.query.limit || 5;
     limit = Number(limit);
 
-    modelUser.find({})
-        //from user, desde el usuario = from + 1
-        .skip(from)
-        //Shows only five users
-        .limit(limit)
-        .exec((err, responseDetail) => {
-            if (err) {
-                return res.status(400).json({
-                    response: {
-                        status: false,
-                        err
-                    }
-                });
-            }
+    if (req.query.activate === 'false') {
 
-            modelUser.count({}, (err, count) => {
-                res.json({
-                    response: {
-                        status: true,
-                        count
-                    },
-                    responseDetail
+        modelUser.find({ activeUser: false })
+            .skip(from)
+            .limit(limit)
+            .exec((err, responseDetail) => {
+                if (err) {
+                    return res.status(400).json({
+                        response: {
+                            status: false,
+                            err
+                        }
+                    });
+                }
+
+                modelUser.count({ activeUser: false }, (err, count) => {
+                    return res.json({
+                        response: {
+                            status: true,
+                            count
+                        },
+                        responseDetail
+                    })
                 })
             })
 
+    } else {
 
-        })
+        modelUser.find({ activeUser: true })
+            //from user, desde el usuario = from + 1
+            .skip(from)
+            //Shows only five users
+            .limit(limit)
+            .exec((err, responseDetail) => {
+                if (err) {
+                    return res.status(400).json({
+                        response: {
+                            status: false,
+                            err
+                        }
+                    });
+                }
+
+                modelUser.count({ activeUser: true }, (err, count) => {
+                    return res.json({
+                        response: {
+                            status: true,
+                            count
+                        },
+                        responseDetail
+                    })
+                })
+
+
+            })
+    }
+
 }
 
 userController.postUser = async(req, res) => {
