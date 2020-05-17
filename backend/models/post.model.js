@@ -5,7 +5,7 @@ var postSchema = new mongoose.Schema({
     subtitle: { type: String },
     body: { type: String, required: [true, 'A body is required'] },
     categoryId: { type: Number, required: [true, 'A category is required'] },
-    userId: { type: Number, required: [true, 'An user is required'] },
+    userEmail: { type: String, required: [true, 'An user email is required'] },
     urlImage: { type: String },
     comments: [{ body: { type: String }, date: { type: Date, default: Date.now } }],
     date: { type: Date, default: Date.now }

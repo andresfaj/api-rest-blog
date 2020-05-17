@@ -1,6 +1,4 @@
 const modelBlog = require('../models/post.model');
-const modelCategory = require('../models/category.model');
-const modelUser = require('../models/user.model');
 const blogController = {};
 
 blogController.getPublication = async(req, res) => {
@@ -14,43 +12,26 @@ blogController.getPublications = async(req, res) => {
 }
 
 blogController.postPublication = async(req, res) => {
+    const { title, subtitle, body, categoryId, userEmail, urlImage, comments } = req.body;
+    const responseDetail = new modelBlog({ title, subtitle, body, categoryId, userEmail, urlImage, comments });
     try {
-        const { title, subtitle, body, categoryId, userId, urlImage, comments } = req.body;
-        console.log("titulo", title);
-        const responseDetail = new modelBlog({ title, subtitle, body, categoryId, userId, urlImage, comments });
-        const categoryExist = await modelCategory.findOne({ categoryId: categoryId });
-        let userExist = await modelUser.findOne({ userId: userId });
 
-        if (categoryExist && userExist) {
-            await responseDetail.save();
-            res.json({
-                response: {
-                    code: 0,
-                    description: "publication saved"
-                },
-                responseDetail
-            });
-        } else if (categoryExist === null) {
-            res.json({
-                response: {
-                    code: 1,
-                    description: `The category with id:${categoryId} do not exist`
-                },
-                responseDetail
-            });
-        } else {
-            res.json({
-                response: {
-                    code: 1,
-                    description: `The user with id:${userId} do not exist`
-                },
-                responseDetail
-            });
-        }
-
+        await responseDetail.save();
+        res.json({
+            response: {
+                status: true,
+                description: "publication saved"
+            },
+            responseDetail
+        });
 
     } catch (err) {
-        console.log(err);
+        res.status(400).json({
+            response: {
+                status: false,
+                err
+            }
+        })
     }
 }
 
