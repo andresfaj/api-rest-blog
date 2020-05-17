@@ -2,9 +2,37 @@ const modelUser = require('../models/user.model');
 const _ = require('underscore');
 const userController = {}
 
-userController.getUsers = async(req, res) => {
-    const users = await modelUser.find();
-    res.json(users);
+userController.getUsers = (req, res) => {
+
+    let from = req.query.from || 0;
+    from = Number(from);
+
+    let limit = req.query.limit || 5;
+    limit = Number(limit);
+
+    modelUser.find()
+        //from user, desde el usuario = from + 1
+        .skip(from)
+        //Shows only five users
+        .limit(limit)
+        .exec((err, responseDetail) => {
+            if (err) {
+                return res.status(400).json({
+                    response: {
+                        status: false,
+                        err
+                    }
+                });
+            }
+
+            res.json({
+                response: {
+                    status: true,
+                },
+                responseDetail
+            })
+
+        })
 }
 
 userController.postUser = async(req, res) => {
