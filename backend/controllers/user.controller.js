@@ -10,7 +10,7 @@ userController.getUsers = (req, res) => {
     let limit = req.query.limit || 5;
     limit = Number(limit);
 
-    modelUser.find()
+    modelUser.find({})
         //from user, desde el usuario = from + 1
         .skip(from)
         //Shows only five users
@@ -25,12 +25,16 @@ userController.getUsers = (req, res) => {
                 });
             }
 
-            res.json({
-                response: {
-                    status: true,
-                },
-                responseDetail
+            modelUser.count({}, (err, count) => {
+                res.json({
+                    response: {
+                        status: true,
+                        count
+                    },
+                    responseDetail
+                })
             })
+
 
         })
 }
@@ -86,7 +90,47 @@ userController.putUser = async(req, res) => {
             }
         });
     }
+}
 
+userController.deleteUser = (req, res) => {
+
+    let id = req.params.id;
+    let changeActiveUser = {
+        activeUser: false
+    }
+
+    // modelUser.findByIdAndRemove(id, (err, responseDetail) => {
+    modelUser.findByIdAndUpdate(id, changeActiveUser, { new: true }, (err, responseDetail) => {
+        if (err) {
+            return res.status(400).json({
+                response: {
+                    status: false,
+                    err
+                }
+            });
+        };
+
+        if (responseDetail === null) {
+            return res.status(400).json({
+                response: {
+                    status: false,
+                    err: {
+                        message: 'User not found'
+                    }
+                }
+            })
+
+        }
+
+        res.json({
+            response: {
+                status: true,
+                description: 'user deleted'
+            },
+            responseDetail
+        })
+
+    })
 
 }
 
