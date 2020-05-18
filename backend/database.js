@@ -1,8 +1,10 @@
 const mongoose = require('mongoose');
+require('./config/config');
 
-const URI = 'mongodb://localhost:27017/dbnaydujaramillo';
 
-mongoose.connect(URI, {
+//const URI = 'mongodb://localhost:27017/dbnaydujaramillo';
+
+mongoose.connect(process.env.URLDB, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,

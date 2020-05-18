@@ -24,8 +24,7 @@ userController.getUsers = (req, res) => {
                         }
                     });
                 }
-
-                modelUser.count({ activeUser: false }, (err, count) => {
+                modelUser.countDocuments({ activeUser: false }, (err, count) => {
                     return res.json({
                         response: {
                             status: true,
@@ -53,7 +52,7 @@ userController.getUsers = (req, res) => {
                     });
                 }
 
-                modelUser.count({ activeUser: true }, (err, count) => {
+                modelUser.countDocuments({ activeUser: true }, (err, count) => {
                     return res.json({
                         response: {
                             status: true,
