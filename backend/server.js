@@ -6,7 +6,6 @@ var colors = require('colors');
 //Initiliazations
 const app = express();
 require('./database');
-require('./config/config');
 
 //Settings
 app.set('appName', 'Naydu Jaramillo');
