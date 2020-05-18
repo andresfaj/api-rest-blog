@@ -22,7 +22,7 @@ let urlDB;
 if (process.env.NODE_ENV === 'dev') {
     urlDB = 'mongodb://localhost:27017/dbnaydujaramillo';
 } else {
-    urlDB = 'mongodb+srv://admin:1CFT5TpsbZ4KEjOp@cluster0-trlqe.mongodb.net/dbnaydujaramillo'
+    urlDB = process.env.MONGO_URI;
 }
 
 process.env.URLDB = urlDB;
