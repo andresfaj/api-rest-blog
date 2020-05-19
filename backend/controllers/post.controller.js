@@ -6,14 +6,69 @@ blogController.getPublication = async(req, res) => {
     res.json(publication);
 }
 
-blogController.getPublications = async(req, res) => {
-    const publications = await modelBlog.find().sort({ date: -1 });
-    res.json(publications);
+blogController.getPublications = (req, res) => {
+
+    let from = req.query.from || 0;
+    from = Number(from);
+
+    let limit = req.query.limit || 5;
+    limit = Number(limit);
+
+    if (req.query.active === 'false') {
+
+        modelBlog.find({ activePost: false })
+            .sort({ date: -1 })
+            .skip(from)
+            .limit(limit)
+            .exec((err, responseDetail) => {
+                if (err) {
+                    return res.status(400).json({
+                        response: {
+                            status: false,
+                            err
+                        }
+                    });
+                }
+                modelBlog.countDocuments({ activePost: false }, (err, count) => {
+                    return res.json({
+                        response: {
+                            status: true,
+                            count
+                        },
+                        responseDetail
+                    })
+                })
+            });
+    } else {
+        modelBlog.find({ activePost: true })
+            .sort({ date: -1 })
+            .skip(from)
+            .limit(limit)
+            .exec((err, responseDetail) => {
+                if (err) {
+                    return res.status(400).json({
+                        response: {
+                            status: false,
+                            err
+                        }
+                    });
+                }
+                modelBlog.countDocuments({ activePost: true }, (err, count) => {
+                    return res.json({
+                        response: {
+                            status: true,
+                            count
+                        },
+                        responseDetail
+                    })
+                })
+            });
+    }
 }
 
 blogController.postPublication = async(req, res) => {
-    const { title, subtitle, body, categoryId, userEmail, urlImage, comments } = req.body;
-    const responseDetail = new modelBlog({ title, subtitle, body, categoryId, userEmail, urlImage, comments });
+    const { title, subtitle, body, categoryId, userEmail, urlImage, activePost, comments } = req.body;
+    const responseDetail = new modelBlog({ title, subtitle, body, categoryId, userEmail, urlImage, activePost, comments });
     try {
 
         await responseDetail.save();

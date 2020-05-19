@@ -10,7 +10,7 @@ userController.getUsers = (req, res) => {
     let limit = req.query.limit || 5;
     limit = Number(limit);
 
-    if (req.query.activate === 'false') {
+    if (req.query.active === 'false') {
 
         modelUser.find({ activeUser: false })
             .skip(from)
