@@ -91,7 +91,7 @@ categoryController.deleteCategory = (req, res) => {
         res.json({
             response: {
                 status: true,
-                description: "publication deleted"
+                description: "category deleted"
             },
             responseDetail
         })

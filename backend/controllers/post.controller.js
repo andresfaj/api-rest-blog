@@ -144,7 +144,7 @@ blogController.deletePublication = (req, res) => {
         res.json({
             response: {
                 status: true,
-                description: 'post deleted'
+                description: 'Publication deleted'
             },
             responseDetail
         })
