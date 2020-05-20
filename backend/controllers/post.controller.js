@@ -91,17 +91,64 @@ blogController.postPublication = async(req, res) => {
 }
 
 blogController.putPublication = async(req, res) => {
-    const { title, subtitle, body, urlimage } = req.body;
-    await modelBlog.findByIdAndUpdate(req.params.id, { title, subtitle, body, urlimage });
-    res.json({
-        description: "publication updated"
-    })
+    let body = req.body;
+    try {
+        let responseDetail = await modelBlog.findByIdAndUpdate(req.params.id, body, { new: true, runValidators: true });
+        res.json({
+            response: {
+                status: true,
+                description: "publication updated"
+            },
+            responseDetail
+        });
+
+    } catch (err) {
+        res.status(400).json({
+            response: {
+                status: false,
+                err
+            }
+        });
+    }
 }
 
-blogController.deletePublication = async(req, res) => {
-    await modelBlog.findByIdAndDelete(req.params.id);
-    res.json({
-        description: "publication deleted"
+blogController.deletePublication = (req, res) => {
+
+    let id = req.params.id;
+    let changeActivePost = {
+        activePost: false
+    }
+
+    // modelBlog.findByIdAndRemove(id, (err, responseDetail) => {
+    modelBlog.findByIdAndUpdate(id, changeActivePost, { new: true }, (err, responseDetail) => {
+        if (err) {
+            return res.status(400).json({
+                response: {
+                    status: false,
+                    err
+                }
+            });
+        };
+
+        if (responseDetail === null) {
+            return res.status(400).json({
+                response: {
+                    status: false,
+                    err: {
+                        message: 'Publication not found'
+                    }
+                }
+            })
+        }
+
+        res.json({
+            response: {
+                status: true,
+                description: 'post deleted'
+            },
+            responseDetail
+        })
+
     })
 }
 

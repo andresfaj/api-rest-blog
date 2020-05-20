@@ -101,7 +101,7 @@ userController.putUser = async(req, res) => {
     let body = _.pick(req.body, ['name', 'lastName', 'role', 'email', 'urlImage', 'activeUser']);
     // delete body.password;
     try {
-        let responseDetail = await modelUser.findByIdAndUpdate(id, body, { new: true, runValidators: true });
+        let responseDetail = await modelUser.findByIdAndUpdate(id, body, { new: true, runValidators: true, context: 'query' });
         responseDetail.password = null;
         res.json({
             response: {
