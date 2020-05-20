@@ -21,6 +21,7 @@ app.use(cors({ origin: 'http://localhost:4200' }));
 app.use('/blog', require('./routes/post.route'));
 app.use(require('./routes/user.route'));
 app.use(require('./routes/category.route'));
+app.use(require('./routes/login.route'));
 app.get('/', (req, res) => {
     res.send('<h1> This is Naydú Jaramillo Backend server </h1>');
 });
