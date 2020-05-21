@@ -1,11 +1,12 @@
-const modelUser = require('../models/user.model');
+const UserModel = require('../models/user.model');
+const bcrypt = require('bcrypt');
 const loginController = {}
 
 loginController.postLogin = (req, res) => {
 
     let body = req.body;
 
-    modelUser.findOne({ email: body.email }, (err, userDB) => {
+    UserModel.findOne({ email: body.email }, (err, dbUser) => {
 
         if (err) {
             return res.status(500).json({
@@ -16,25 +17,42 @@ loginController.postLogin = (req, res) => {
             });
         }
 
-        if (!userDB) {
+        if (!dbUser) {
             return res.status(400).json({
                 response: {
                     status: false,
                     err: {
-                        message: 'User and password wrong'
+                        message: 'User or password wrong'
                     }
                 }
             });
         }
 
+        if (!bcrypt.compareSync(body.password, dbUser.password)) {
+            return res.status(400).json({
+                response: {
+                    status: false,
+                    err: {
+                        message: 'User or password wrong'
+                    }
+                }
+            });
+        }
+
+        res.json({
+            response: {
+                status: true,
+                description: "Login was successfull"
+            },
+            responseDetail: {
+                token: '123',
+                dbUser
+            }
+
+        });
+
     })
 
-    res.json({
-        response: {
-            status: true,
-            description: "Login was successfull"
-        }
-    });
 }
 
 module.exports = loginController;
