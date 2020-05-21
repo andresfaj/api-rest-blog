@@ -1,4 +1,4 @@
-const modelUser = require('../models/user.model');
+const UserModel = require('../models/user.model');
 const _ = require('underscore');
 const userController = {}
 
@@ -12,7 +12,7 @@ userController.getUsers = (req, res) => {
 
     if (req.query.active === 'false') {
 
-        modelUser.find({ activeUser: false })
+        UserModel.find({ activeUser: false })
             .skip(from)
             .limit(limit)
             .exec((err, responseDetail) => {
@@ -24,7 +24,7 @@ userController.getUsers = (req, res) => {
                         }
                     });
                 }
-                modelUser.countDocuments({ activeUser: false }, (err, count) => {
+                UserModel.countDocuments({ activeUser: false }, (err, count) => {
                     return res.json({
                         response: {
                             status: true,
@@ -37,7 +37,7 @@ userController.getUsers = (req, res) => {
 
     } else {
 
-        modelUser.find({ activeUser: true })
+        UserModel.find({ activeUser: true })
             //from user, desde el usuario = from + 1
             .skip(from)
             //Shows only five users
@@ -52,7 +52,7 @@ userController.getUsers = (req, res) => {
                     });
                 }
 
-                modelUser.countDocuments({ activeUser: true }, (err, count) => {
+                UserModel.countDocuments({ activeUser: true }, (err, count) => {
                     return res.json({
                         response: {
                             status: true,
@@ -71,7 +71,7 @@ userController.getUsers = (req, res) => {
 userController.postUser = async(req, res) => {
 
     const { name, lastName, role, email, password, activeUser, urlImage } = req.body;
-    const responseDetail = new modelUser({ name, lastName, role, email, password, activeUser, urlImage });
+    const responseDetail = new UserModel({ name, lastName, role, email, password, activeUser, urlImage });
     if (responseDetail.password === undefined) {
         return res.json({
             response: {
@@ -112,7 +112,7 @@ userController.putUser = async(req, res) => {
     let body = _.pick(req.body, ['name', 'lastName', 'role', 'email', 'urlImage', 'activeUser']);
     // delete body.password;
     try {
-        let responseDetail = await modelUser.findByIdAndUpdate(id, body, { new: true, runValidators: true, context: 'query' });
+        let responseDetail = await UserModel.findByIdAndUpdate(id, body, { new: true, runValidators: true, context: 'query' });
         responseDetail.password = null;
         res.json({
             response: {
@@ -139,8 +139,8 @@ userController.deleteUser = (req, res) => {
         activeUser: false
     }
 
-    // modelUser.findByIdAndRemove(id, (err, responseDetail) => {
-    modelUser.findByIdAndUpdate(id, changeActiveUser, { new: true }, (err, responseDetail) => {
+    // UserModel.findByIdAndRemove(id, (err, responseDetail) => {
+    UserModel.findByIdAndUpdate(id, changeActiveUser, { new: true }, (err, responseDetail) => {
         if (err) {
             return res.status(400).json({
                 response: {

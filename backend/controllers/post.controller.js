@@ -1,8 +1,8 @@
-const modelBlog = require('../models/post.model');
+const BlogModel = require('../models/post.model');
 const blogController = {};
 
 blogController.getPublication = async(req, res) => {
-    const publication = await modelBlog.findById(req.params.id);
+    const publication = await BlogModel.findById(req.params.id);
     res.json(publication);
 }
 
@@ -16,7 +16,7 @@ blogController.getPublications = (req, res) => {
 
     if (req.query.active === 'false') {
 
-        modelBlog.find({ activePost: false })
+        BlogModel.find({ activePost: false })
             .sort({ date: -1 })
             .skip(from)
             .limit(limit)
@@ -29,7 +29,7 @@ blogController.getPublications = (req, res) => {
                         }
                     });
                 }
-                modelBlog.countDocuments({ activePost: false }, (err, count) => {
+                BlogModel.countDocuments({ activePost: false }, (err, count) => {
                     return res.json({
                         response: {
                             status: true,
@@ -40,7 +40,7 @@ blogController.getPublications = (req, res) => {
                 })
             });
     } else {
-        modelBlog.find({ activePost: true })
+        BlogModel.find({ activePost: true })
             .sort({ date: -1 })
             .skip(from)
             .limit(limit)
@@ -53,7 +53,7 @@ blogController.getPublications = (req, res) => {
                         }
                     });
                 }
-                modelBlog.countDocuments({ activePost: true }, (err, count) => {
+                BlogModel.countDocuments({ activePost: true }, (err, count) => {
                     return res.json({
                         response: {
                             status: true,
@@ -68,7 +68,7 @@ blogController.getPublications = (req, res) => {
 
 blogController.postPublication = async(req, res) => {
     const { title, subtitle, body, categoryId, userEmail, urlImage, activePost, comments } = req.body;
-    const responseDetail = new modelBlog({ title, subtitle, body, categoryId, userEmail, urlImage, activePost, comments });
+    const responseDetail = new BlogModel({ title, subtitle, body, categoryId, userEmail, urlImage, activePost, comments });
     try {
 
         await responseDetail.save();
@@ -93,7 +93,7 @@ blogController.postPublication = async(req, res) => {
 blogController.putPublication = async(req, res) => {
     let body = req.body;
     try {
-        let responseDetail = await modelBlog.findByIdAndUpdate(req.params.id, body, { new: true, runValidators: true });
+        let responseDetail = await BlogModel.findByIdAndUpdate(req.params.id, body, { new: true, runValidators: true });
         res.json({
             response: {
                 status: true,
@@ -119,8 +119,8 @@ blogController.deletePublication = (req, res) => {
         activePost: false
     }
 
-    // modelBlog.findByIdAndRemove(id, (err, responseDetail) => {
-    modelBlog.findByIdAndUpdate(id, changeActivePost, { new: true }, (err, responseDetail) => {
+    // BlogModel.findByIdAndRemove(id, (err, responseDetail) => {
+    BlogModel.findByIdAndUpdate(id, changeActivePost, { new: true }, (err, responseDetail) => {
         if (err) {
             return res.status(400).json({
                 response: {

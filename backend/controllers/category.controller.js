@@ -1,8 +1,8 @@
-const modelCategory = require('../models/category.model');
+const CategoryModel = require('../models/category.model');
 const categoryController = {}
 
 categoryController.getCategories = (req, res) => {
-    modelCategory.find({})
+    CategoryModel.find({})
         .exec((err, responseDetail) => {
             if (err) {
                 return res.status(400).json({
@@ -12,7 +12,7 @@ categoryController.getCategories = (req, res) => {
                     }
                 });
             }
-            modelCategory.countDocuments({}, (err, count) => {
+            CategoryModel.countDocuments({}, (err, count) => {
                 res.json({
                     response: {
                         status: true,
@@ -28,7 +28,7 @@ categoryController.getCategories = (req, res) => {
 categoryController.postCategory = async(req, res) => {
     const { name } = req.body;
     console.log(name);
-    var category = new modelCategory({ name });
+    var category = new CategoryModel({ name });
     try {
         let responseDetail = await category.save();
         res.json({
@@ -54,7 +54,7 @@ categoryController.putCategory = async(req, res) => {
     let body = req.body;
 
     try {
-        let responseDetail = await modelCategory.findByIdAndUpdate(id, body, { new: true, runValidators: true, context: 'query' });
+        let responseDetail = await CategoryModel.findByIdAndUpdate(id, body, { new: true, runValidators: true, context: 'query' });
         res.json({
             response: {
                 status: true,
@@ -77,7 +77,7 @@ categoryController.deleteCategory = (req, res) => {
     let id = req.params.id;
     console.log(id);
 
-    modelCategory.findByIdAndDelete(id, (err, responseDetail) => {
+    CategoryModel.findByIdAndDelete(id, (err, responseDetail) => {
 
         if (err) {
             return res.status(400).json({
