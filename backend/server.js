@@ -17,7 +17,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(morgan('dev'));
 app.use(cors({ origin: 'http://localhost:4200' }));
 
-//Routes Global
+//Global routes
 app.use(require('./routes/index'));
 
 //Server
