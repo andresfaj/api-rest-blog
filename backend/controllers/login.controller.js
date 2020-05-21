@@ -46,7 +46,7 @@ loginController.postLogin = (req, res) => {
         //expiresIn: 60 segundos * 30 = 30 min
         let token = jwt.sign({
             usuario: dbUser
-        }, process.env.SEED, { expiresIn: process.env.CADUCIDAD_TOKEN })
+        }, process.env.SEED, { expiresIn: 60 * 30 });
 
         res.json({
             response: {
