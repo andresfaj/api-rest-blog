@@ -17,14 +17,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(morgan('dev'));
 app.use(cors({ origin: 'http://localhost:4200' }));
 
-//Routes
-app.use('/blog', require('./routes/post.route'));
-app.use(require('./routes/user.route'));
-app.use(require('./routes/category.route'));
-app.use(require('./routes/login.route'));
-app.get('/', (req, res) => {
-    res.send('<h1> This is Naydú Jaramillo Backend server </h1>');
-});
+//Routes Global
+app.use(require('./routes/index'));
 
 //Server
 app.listen(process.env.PORT, () => {
