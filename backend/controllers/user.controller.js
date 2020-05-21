@@ -109,6 +109,7 @@ userController.postUser = async(req, res) => {
 userController.putUser = async(req, res) => {
 
     let id = req.params.id;
+    //.pick sirve para obtener solo lo que se necesita, los demás campos no los incluye asi le llegen
     let body = _.pick(req.body, ['name', 'lastName', 'role', 'email', 'urlImage', 'activeUser']);
     // delete body.password;
     try {
