@@ -6,11 +6,8 @@ const jwt = require('jsonwebtoken');
 
 let verifyToken = (req, res, next) => {
 
-    console.log("aqui", req.allusers);
-
     //Get header variables
     let token = req.get('token');
-    console.log(token);
 
     //decoded is the same to paylod
     jwt.verify(token, process.env.SEED, (err, decoded) => {
@@ -24,14 +21,11 @@ let verifyToken = (req, res, next) => {
             })
         }
 
-        // req.usuario = decoded.usuario;
+        //For to use the jwt payload
+        req.usuario = decoded.usuario;
         next();
 
-
-
     });
-
-
 }
 
 module.exports = {

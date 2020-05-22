@@ -4,6 +4,11 @@ const userController = {}
 
 userController.getUsers = (req, res) => {
 
+    //For to use the jwt payload
+    // return res.json({
+    //     usuario: req.usuario.name
+    // })
+
     let from = req.query.from || 0;
     from = Number(from);
 
