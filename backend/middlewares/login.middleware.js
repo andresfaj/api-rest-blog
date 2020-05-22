@@ -28,6 +28,33 @@ let verifyToken = (req, res, next) => {
     });
 }
 
+//===============
+// Verify Admin Role
+//===============
+
+let verifyAdmin_Role = (req, res, next) => {
+
+    let usuario = req.usuario;
+
+    if (usuario.role === "USER_ROLE") {
+
+        return res.status(403).json({
+            response: {
+                status: false,
+                err: {
+                    message: "You don't have permissions"
+                }
+            }
+        })
+
+    } else {
+        next();
+    }
+
+}
+
+
 module.exports = {
-    verifyToken
+    verifyToken,
+    verifyAdmin_Role
 }
