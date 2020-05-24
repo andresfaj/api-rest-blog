@@ -22,6 +22,12 @@ app.use(require('./routes/index'));
 
 //Server
 app.listen(process.env.PORT, () => {
-    console.log(`${app.get('appName')} backend server is running`.green);
-    console.log(`Server on port ${process.env.PORT}`.green)
+    console.log(`${app.get('appName')} backend server is running`.underline.green);
+    if (process.env.PORT === '3000') {
+        console.log('Development server');
+        console.log(`Server on port ${process.env.PORT}`.green);
+    } else {
+        console.log('Production server');
+        console.log(`Server on port ${process.env.PORT}`.green);
+    }
 });
