@@ -8,7 +8,7 @@ let validRoles = {
     message: '{VALUE} is not a valid role'
 }
 
-const userSchema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema({
     name: { type: String, required: [true, 'A name is required'] },
     lastName: { type: String, required: [true, 'A LastName is required'] },
     role: { type: String, default: 'USER_ROLE', enum: validRoles },
@@ -19,14 +19,14 @@ const userSchema = new mongoose.Schema({
     date: { type: Date, default: Date.now }
 });
 
-userSchema.methods.encryptPassword = async(password) => {
+UserSchema.methods.encryptPassword = async(password) => {
     let salt = await bcrypt.genSalt(saltRounds);
     let hash = bcrypt.hash(password, salt);
     return hash;
 }
 
 //Se elimina contraseña de los response
-userSchema.methods.toJSON = function() {
+UserSchema.methods.toJSON = function() {
     let user = this;
     let userObject = user.toObject();
     delete userObject.password;
@@ -34,6 +34,6 @@ userSchema.methods.toJSON = function() {
     return userObject;
 }
 
-userSchema.plugin(uniqueValidator, { message: '{PATH} must be unique' });
+UserSchema.plugin(uniqueValidator, { message: '{PATH} must be unique' });
 
-module.exports = mongoose.model('users', userSchema);
+module.exports = mongoose.model('Users', UserSchema);

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-var postSchema = new mongoose.Schema({
+var PostSchema = new mongoose.Schema({
     title: { type: String, required: [true, 'A title is required'] },
     subtitle: { type: String },
     body: { type: String, required: [true, 'A body is required'] },
@@ -12,4 +12,4 @@ var postSchema = new mongoose.Schema({
     date: { type: Date, default: Date.now }
 });
 
-module.exports = mongoose.model('posts', postSchema);
+module.exports = mongoose.model('Posts', PostSchema);
