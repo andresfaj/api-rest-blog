@@ -2,6 +2,39 @@ const UserModel = require('../models/user.model');
 const _ = require('underscore');
 const userController = {}
 
+userController.getUser = (req, res) => {
+    let id = req.params.id;
+    UserModel.findById(id, (err, responseDetail) => {
+        if (err) {
+            return res.status(500).json({
+                response: {
+                    status: false,
+                    err
+                }
+            });
+        }
+
+        if (!responseDetail) {
+            return res.status(400).json({
+                response: {
+                    status: false,
+                    err: {
+                        message: "ID not found"
+                    }
+                }
+            });
+        }
+
+        res.json({
+            response: {
+                status: true,
+            },
+            responseDetail
+        });
+
+    });
+}
+
 userController.getUsers = (req, res) => {
 
     //For to use the jwt payload
@@ -89,8 +122,16 @@ userController.postUser = async(req, res) => {
     } else {
         responseDetail.password = await responseDetail.encryptPassword(responseDetail.password);
     }
-    try {
-        await responseDetail.save();
+
+    responseDetail.save((err, responseDetail) => {
+        if (err) {
+            return res.status(400).json({
+                response: {
+                    status: false,
+                    err
+                }
+            });
+        }
         //Se quita el dato de la contraseña para que no sea visible en el JSON
         responseDetail.password = null;
         res.json({
@@ -100,25 +141,36 @@ userController.postUser = async(req, res) => {
             },
             responseDetail
         });
-
-    } catch (err) {
-        res.status(400).json({
-            response: {
-                status: false,
-                err
-            }
-        });
-    }
+    });
 }
 
-userController.putUser = async(req, res) => {
+userController.putUser = (req, res) => {
 
     let id = req.params.id;
     //.pick sirve para obtener solo lo que se necesita, los demás campos no los incluye asi le llegen
     let body = _.pick(req.body, ['name', 'lastName', 'role', 'email', 'urlImage', 'activeUser']);
     // delete body.password;
-    try {
-        let responseDetail = await UserModel.findByIdAndUpdate(id, body, { new: true, runValidators: true, context: 'query' });
+
+    UserModel.findByIdAndUpdate(id, body, { new: true, runValidators: true, context: 'query' }, (err, responseDetail) => {
+        if (err) {
+            return res.status(500).json({
+                response: {
+                    status: false,
+                    err
+                }
+            });
+        }
+
+        if (!responseDetail) {
+            return res.status(400).json({
+                response: {
+                    status: false,
+                    err: {
+                        message: 'ID not found'
+                    }
+                }
+            })
+        }
         responseDetail.password = null;
         res.json({
             response: {
@@ -127,15 +179,7 @@ userController.putUser = async(req, res) => {
             },
             responseDetail
         });
-
-    } catch (err) {
-        res.status(400).json({
-            response: {
-                status: false,
-                err
-            }
-        });
-    }
+    });
 }
 
 userController.deleteUser = (req, res) => {
@@ -148,7 +192,7 @@ userController.deleteUser = (req, res) => {
     // UserModel.findByIdAndRemove(id, (err, responseDetail) => {
     UserModel.findByIdAndUpdate(id, changeActiveUser, { new: true }, (err, responseDetail) => {
         if (err) {
-            return res.status(400).json({
+            return res.status(500).json({
                 response: {
                     status: false,
                     err
@@ -156,12 +200,12 @@ userController.deleteUser = (req, res) => {
             });
         }
 
-        if (responseDetail === null) {
+        if (!responseDetail) {
             return res.status(400).json({
                 response: {
                     status: false,
                     err: {
-                        message: 'User not found'
+                        message: 'ID not found'
                     }
                 }
             })

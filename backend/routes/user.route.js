@@ -5,6 +5,7 @@ const { verifyToken, verifyAdmin_Role } = require('../middlewares/login.middlewa
 
 router.post('/user', [verifyToken, verifyAdmin_Role], userController.postUser);
 router.get('/allusers', verifyToken, userController.getUsers);
+router.get('/user/:id', verifyToken, userController.getUser);
 router.put('/user/:id', [verifyToken, verifyAdmin_Role], userController.putUser);
 router.delete('/user/:id', [verifyToken, verifyAdmin_Role], userController.deleteUser);
 
