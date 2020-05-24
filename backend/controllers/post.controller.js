@@ -1,9 +1,37 @@
 const BlogModel = require('../models/post.model');
 const blogController = {};
 
-blogController.getPublication = async(req, res) => {
-    const publication = await BlogModel.findById(req.params.id);
-    res.json(publication);
+blogController.getPublication = (req, res) => {
+    let id = req.params.id;
+    BlogModel.findById(id, (err, responseDetail) => {
+        if (err) {
+            return res.status(500).json({
+                response: {
+                    status: false,
+                    err
+                }
+            });
+        }
+
+        if (!responseDetail) {
+            return res.status(400).json({
+                response: {
+                    status: false,
+                    err: {
+                        message: "ID not found"
+                    }
+                }
+            });
+        }
+
+        res.json({
+            response: {
+                status: true,
+            },
+            responseDetail
+        });
+
+    });
 }
 
 blogController.getPublications = (req, res) => {
@@ -66,34 +94,56 @@ blogController.getPublications = (req, res) => {
     }
 }
 
-blogController.postPublication = async(req, res) => {
-    const { title, subtitle, body, categoryId, userEmail, urlImage, activePost, comments } = req.body;
-    const responseDetail = new BlogModel({ title, subtitle, body, categoryId, userEmail, urlImage, activePost, comments });
-    try {
+blogController.postPublication = (req, res) => {
+    const { title, subtitle, body, categoryId, urlImage, activePost, comments } = req.body;
+    let userEmail = req.usuario.email;
+    const blog = new BlogModel({ title, subtitle, body, categoryId, userEmail, urlImage, activePost, comments });
 
-        await responseDetail.save();
+    blog.save((err, responseDetail) => {
+        if (err) {
+            return res.status(400).json({
+                response: {
+                    status: false,
+                    err
+                }
+            })
+        }
+
         res.json({
             response: {
                 status: true,
                 description: "publication saved"
             },
             responseDetail
-        });
-
-    } catch (err) {
-        res.status(400).json({
-            response: {
-                status: false,
-                err
-            }
         })
-    }
+    });
 }
 
-blogController.putPublication = async(req, res) => {
+blogController.putPublication = (req, res) => {
+    let id = req.params.id;
     let body = req.body;
-    try {
-        let responseDetail = await BlogModel.findByIdAndUpdate(req.params.id, body, { new: true, runValidators: true });
+
+    BlogModel.findByIdAndUpdate(id, body, { new: true, runValidators: true, context: 'query' }, (err, responseDetail) => {
+        if (err) {
+            return res.status(500).json({
+                response: {
+                    status: false,
+                    err: err
+                }
+            });
+        }
+
+        if (!responseDetail) {
+            return res.status(400).json({
+                response: {
+                    status: false,
+                    err: {
+                        message: "ID not found"
+                    }
+                }
+            });
+        }
+
         res.json({
             response: {
                 status: true,
@@ -101,15 +151,7 @@ blogController.putPublication = async(req, res) => {
             },
             responseDetail
         });
-
-    } catch (err) {
-        res.status(400).json({
-            response: {
-                status: false,
-                err
-            }
-        });
-    }
+    });
 }
 
 blogController.deletePublication = (req, res) => {
@@ -122,7 +164,7 @@ blogController.deletePublication = (req, res) => {
     // BlogModel.findByIdAndRemove(id, (err, responseDetail) => {
     BlogModel.findByIdAndUpdate(id, changeActivePost, { new: true }, (err, responseDetail) => {
         if (err) {
-            return res.status(400).json({
+            return res.status(500).json({
                 response: {
                     status: false,
                     err
@@ -130,12 +172,12 @@ blogController.deletePublication = (req, res) => {
             });
         };
 
-        if (responseDetail === null) {
+        if (!responseDetail) {
             return res.status(400).json({
                 response: {
                     status: false,
                     err: {
-                        message: 'Publication not found'
+                        message: 'ID not found'
                     }
                 }
             })
