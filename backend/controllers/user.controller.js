@@ -134,7 +134,7 @@ userController.postUser = async(req, res) => {
         }
         //Se quita el dato de la contraseña para que no sea visible en el JSON
         responseDetail.password = null;
-        res.json({
+        res.status(201).json({
             response: {
                 status: true,
                 description: "user saved"

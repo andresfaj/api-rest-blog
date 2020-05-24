@@ -76,7 +76,7 @@ categoryController.postCategory = (req, res) => {
             })
         }
 
-        res.json({
+        res.status(201).json({
             response: {
                 status: true,
                 description: "category saved"

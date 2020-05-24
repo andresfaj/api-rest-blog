@@ -109,7 +109,7 @@ blogController.postPublication = (req, res) => {
             })
         }
 
-        res.json({
+        res.status(201).json({
             response: {
                 status: true,
                 description: "publication saved"
