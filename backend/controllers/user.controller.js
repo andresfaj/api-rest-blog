@@ -171,7 +171,6 @@ userController.putUser = (req, res) => {
                 }
             })
         }
-        responseDetail.password = null;
         res.json({
             response: {
                 status: true,
