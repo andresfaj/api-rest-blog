@@ -5,6 +5,7 @@ const { verifyToken, verifyAdmin_Role } = require('../middlewares/login.middlewa
 
 router.post('/category', [verifyToken, verifyAdmin_Role], categoryController.postCategory);
 router.get('/allcategories', verifyToken, categoryController.getCategories);
+router.get('/category/:id', verifyToken, categoryController.getCategory);
 router.put('/category/:id', [verifyToken, verifyAdmin_Role], categoryController.putCategory);
 router.delete('/category/:id', [verifyToken, verifyAdmin_Role], categoryController.deleteCategory);
 

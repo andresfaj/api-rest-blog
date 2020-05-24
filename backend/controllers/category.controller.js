@@ -1,6 +1,39 @@
 const CategoryModel = require('../models/category.model');
 const categoryController = {}
 
+categoryController.getCategory = (req, res) => {
+    let id = req.params.id;
+    CategoryModel.findById(id, (err, responseDetail) => {
+        if (err) {
+            return res.status(500).json({
+                response: {
+                    status: false,
+                    err
+                }
+            });
+        }
+
+        if (!responseDetail) {
+            return res.status(400).json({
+                response: {
+                    status: false,
+                    err: {
+                        message: "ID not found"
+                    }
+                }
+            });
+        }
+
+        res.json({
+            response: {
+                status: true,
+            },
+            responseDetail
+        });
+
+    });
+}
+
 categoryController.getCategories = (req, res) => {
     CategoryModel.find({})
         .exec((err, responseDetail) => {
@@ -22,15 +55,25 @@ categoryController.getCategories = (req, res) => {
                 })
             })
         })
-
 }
 
-categoryController.postCategory = async(req, res) => {
+categoryController.postCategory = (req, res) => {
+
     const { name } = req.body;
-    console.log(name);
-    var category = new CategoryModel({ name });
-    try {
-        let responseDetail = await category.save();
+    let userId = req.usuario._id;
+    var category = new CategoryModel({ name, userId });
+
+    category.save((err, responseDetail) => {
+
+        if (err) {
+            return res.status(400).json({
+                response: {
+                    status: false,
+                    err
+                }
+            })
+        }
+
         res.json({
             response: {
                 status: true,
@@ -38,23 +81,37 @@ categoryController.postCategory = async(req, res) => {
             },
             responseDetail
         });
-    } catch (err) {
-        res.status(400).json({
-            response: {
-                status: false,
-                err
-            }
-        })
-    }
+
+    });
+
 }
 
-categoryController.putCategory = async(req, res) => {
+categoryController.putCategory = (req, res) => {
 
     let id = req.params.id;
     let body = req.body;
 
-    try {
-        let responseDetail = await CategoryModel.findByIdAndUpdate(id, body, { new: true, runValidators: true, context: 'query' });
+    CategoryModel.findByIdAndUpdate(id, body, { new: true, runValidators: true, context: 'query' }, (err, responseDetail) => {
+        if (err) {
+            return res.status(500).json({
+                response: {
+                    status: false,
+                    err: err
+                }
+            });
+        }
+
+        if (!responseDetail) {
+            return res.status(400).json({
+                response: {
+                    status: false,
+                    err: {
+                        message: "ID not found"
+                    }
+                }
+            });
+        }
+
         res.json({
             response: {
                 status: true,
@@ -62,15 +119,8 @@ categoryController.putCategory = async(req, res) => {
             },
             responseDetail
         });
+    });
 
-    } catch (err) {
-        res.status(400).json({
-            response: {
-                status: false,
-                err: err
-            }
-        });
-    }
 }
 
 categoryController.deleteCategory = (req, res) => {
@@ -80,12 +130,23 @@ categoryController.deleteCategory = (req, res) => {
     CategoryModel.findByIdAndDelete(id, (err, responseDetail) => {
 
         if (err) {
-            return res.status(400).json({
+            return res.status(500).json({
                 response: {
                     status: false,
                     err: err
                 }
             })
+        }
+
+        if (!responseDetail) {
+            return res.status(400).json({
+                response: {
+                    status: false,
+                    err: {
+                        message: "ID not found"
+                    }
+                }
+            });
         }
 
         res.json({

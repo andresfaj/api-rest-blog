@@ -2,7 +2,8 @@ var mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 
 var categorySchema = mongoose.Schema({
-    name: { type: String, unique: true, lowercase: true, require: [true, "A name is required"] },
+    name: { type: String, unique: true, lowercase: true, required: [true, "A name is required"] },
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
     date: { type: Date, default: Date.now }
 });
 

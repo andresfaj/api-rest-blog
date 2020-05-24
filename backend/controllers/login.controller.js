@@ -41,7 +41,7 @@ loginController.postLogin = (req, res) => {
             });
         }
 
-        dbUser = _.pick(dbUser, ['name', 'lastName', 'role', 'email', 'urlImage', 'activeUser']);
+        dbUser = _.pick(dbUser, ['_id', 'name', 'lastName', 'role', 'email', 'urlImage', 'activeUser']);
 
         //expiresIn: 60 segundos * 30 = 30 min
         let token = jwt.sign({
