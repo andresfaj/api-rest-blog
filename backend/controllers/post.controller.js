@@ -3,35 +3,37 @@ const blogController = {};
 
 blogController.getPublication = (req, res) => {
     let id = req.params.id;
-    BlogModel.findById(id, (err, responseDetail) => {
-        if (err) {
-            return res.status(500).json({
-                response: {
-                    status: false,
-                    err
-                }
-            });
-        }
-
-        if (!responseDetail) {
-            return res.status(400).json({
-                response: {
-                    status: false,
-                    err: {
-                        message: "ID not found"
+    BlogModel.findById(id)
+        .populate('categoryId', 'name')
+        .exec((err, responseDetail) => {
+            if (err) {
+                return res.status(500).json({
+                    response: {
+                        status: false,
+                        err
                     }
-                }
+                });
+            }
+
+            if (!responseDetail) {
+                return res.status(400).json({
+                    response: {
+                        status: false,
+                        err: {
+                            message: "ID not found"
+                        }
+                    }
+                });
+            }
+
+            res.json({
+                response: {
+                    status: true,
+                },
+                responseDetail
             });
-        }
 
-        res.json({
-            response: {
-                status: true,
-            },
-            responseDetail
         });
-
-    });
 }
 
 blogController.getPublications = (req, res) => {
@@ -48,6 +50,7 @@ blogController.getPublications = (req, res) => {
             .sort({ date: -1 })
             .skip(from)
             .limit(limit)
+            .populate('categoryId', 'name')
             .exec((err, responseDetail) => {
                 if (err) {
                     return res.status(400).json({
@@ -72,6 +75,7 @@ blogController.getPublications = (req, res) => {
             .sort({ date: -1 })
             .skip(from)
             .limit(limit)
+            .populate('categoryId', 'name')
             .exec((err, responseDetail) => {
                 if (err) {
                     return res.status(400).json({
@@ -96,8 +100,8 @@ blogController.getPublications = (req, res) => {
 
 blogController.postPublication = (req, res) => {
     const { title, subtitle, body, categoryId, urlImage, activePost, comments } = req.body;
-    let userEmail = req.usuario.email;
-    const blog = new BlogModel({ title, subtitle, body, categoryId, userEmail, urlImage, activePost, comments });
+    let userId = req.usuario._id;
+    const blog = new BlogModel({ title, subtitle, body, categoryId, userId, urlImage, activePost, comments });
 
     blog.save((err, responseDetail) => {
         if (err) {

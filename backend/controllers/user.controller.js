@@ -108,8 +108,8 @@ userController.getUsers = (req, res) => {
 
 userController.postUser = async(req, res) => {
 
-    const { name, lastName, role, email, password, activeUser, urlImage } = req.body;
-    const responseDetail = new UserModel({ name, lastName, role, email, password, activeUser, urlImage });
+    const { firstName, lastName, role, email, password, activeUser, urlImage } = req.body;
+    const responseDetail = new UserModel({ firstName, lastName, role, email, password, activeUser, urlImage });
     if (responseDetail.password === undefined) {
         return res.json({
             response: {
@@ -148,7 +148,7 @@ userController.putUser = (req, res) => {
 
     let id = req.params.id;
     //.pick sirve para obtener solo lo que se necesita, los demás campos no los incluye asi le llegen
-    let body = _.pick(req.body, ['name', 'lastName', 'role', 'email', 'urlImage', 'activeUser']);
+    let body = _.pick(req.body, ['firstName', 'lastName', 'role', 'email', 'urlImage', 'activeUser']);
     // delete body.password;
 
     UserModel.findByIdAndUpdate(id, body, { new: true, runValidators: true, context: 'query' }, (err, responseDetail) => {

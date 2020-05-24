@@ -9,8 +9,8 @@ let validRoles = {
 }
 
 const UserSchema = new mongoose.Schema({
-    name: { type: String, required: [true, 'A name is required'] },
-    lastName: { type: String, required: [true, 'A LastName is required'] },
+    firstName: { type: String, required: [true, 'A First Name is required'] },
+    lastName: { type: String, required: [true, 'A Last Name is required'] },
     role: { type: String, default: 'USER_ROLE', enum: validRoles },
     email: { type: String, unique: true, required: [true, 'An email is required'] },
     password: { type: String, required: [true, 'A password is required'] },
