@@ -36,6 +36,8 @@ categoryController.getCategory = (req, res) => {
 
 categoryController.getCategories = (req, res) => {
     CategoryModel.find({})
+        //Populate sirve para mostrar todo el contenido del objectId secundario
+        .populate('userId', 'name email')
         .exec((err, responseDetail) => {
             if (err) {
                 return res.status(400).json({
